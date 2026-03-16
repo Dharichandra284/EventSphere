@@ -1,0 +1,35 @@
+<h1>Admin Dashboard</h1>
+
+<input id="title" placeholder="Title">
+<input id="date" type="date">
+<input id="location" placeholder="Location">
+<textarea id="description"></textarea>
+
+<input type="file" id="image">
+
+<button onclick="createEvent()">Create Event</button>
+
+<script>
+
+async function createEvent(){
+
+const formData = new FormData();
+
+formData.append("title",title.value);
+formData.append("date",date.value);
+formData.append("location",location.value);
+formData.append("description",description.value);
+formData.append("image",image.files[0]);
+
+await fetch("http://localhost:5000/api/events/create",{
+
+method:"POST",
+body:formData
+
+});
+
+alert("Event Created");
+
+}
+
+</script>

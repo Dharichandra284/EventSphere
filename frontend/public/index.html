@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>EventSphere</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+<h1>EventSphere</h1>
+<p>Create and manage your events easily</p>
+</header>
+
+<section class="container">
+
+<div class="form-section">
+
+<h2>Create Event</h2>
+
+<input id="title" placeholder="Event Title">
+
+<input id="date" type="date">
+
+<input id="location" placeholder="Location">
+
+<textarea id="description" placeholder="Event Description"></textarea>
+
+<button onclick="createEvent()">Create Event</button>
+
+</div>
+
+<div class="events-section">
+
+<h2>Upcoming Events</h2>
+
+<div id="events"></div>
+
+</div>
+
+</section>
+
+<script>
+
+async function createEvent(){
+
+const event = {
+title: document.getElementById("title").value,
+date: document.getElementById("date").value,
+location: document.getElementById("location").value,
+description: document.getElementById("description").value
+};
+
+await fetch("http://localhost:5000/api/events/create",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify(event)
+});
+
+loadEvents();
+
+}
+
+async function loadEvents(){
+
+const res = await fetch("http://localhost:5000/api/events/all");
+
+const data = await res.json();
+
+let html = "";
+
+data.forEach(e => {
+
+html += `
+<div class="event-card">
+<h3>${e.title}</h3>
+<p class="date">${e.date}</p>
+<p class="location">${e.location}</p>
+<p>${e.description}</p>
+</div>
+`;
+
+});
+
+document.getElementById("events").innerHTML = html;
+
+}
+
+loadEvents();
+
+</script>
+
+</body>
+</html>

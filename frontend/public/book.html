@@ -1,0 +1,38 @@
+<h1>Book Event</h1>
+
+<input id="userId" placeholder="User ID">
+
+<input id="eventId" placeholder="Event ID">
+
+<button onclick="book()">Book Event</button>
+
+<div id="qr"></div>
+
+<script>
+
+async function book(){
+
+const res = await fetch("http://localhost:5000/api/bookings/book",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+userId:userId.value,
+eventId:eventId.value
+
+})
+
+});
+
+const data = await res.json();
+
+document.getElementById("qr").innerHTML = `<img src="${data.qrCode}"/>`;
+
+}
+
+</script>
